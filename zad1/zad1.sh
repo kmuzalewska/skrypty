@@ -32,17 +32,17 @@ elif [[ $v == 1 ]]; then
 	helpf
 	exit 1
 else
-	echo Do You have installed program named finger \(yes\/no\)
-	read var
-	if [[ $var == "yes" ]]; then
-		DETAILS=$(finger $USER | grep Name:)
-		echo $DETAILS
-	elif [[ $var == "no" ]]; then
-		sudo apt-get install finger
-		DETAILS=$(finger $USER | grep Name:)
-		echo $DETAILS
-	else
-		echo Wrong answer. See that. #that function
-	fi
+	#echo Do You have installed program named finger \(yes\/no\)
+	#read var
+	#if [[ $var == "yes" ]]; then
+	#	DETAILS=$(finger $USER | grep Name:)
+	#	echo $DETAILS
+	#elif [[ $var == "no" ]]; then
+	#	sudo apt-get install finger
+	DETAILS=$(getent passwd| grep $USER | cut -d : -f 5)
+	echo $DETAILS
+	#else
+	#	echo Wrong answer. See that. #that function
+	#fi
 fi
 	
