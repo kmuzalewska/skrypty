@@ -52,7 +52,7 @@ else
 	#	echo $DETAILS
 	#elif ( $var == "no" ); then
 	#	sudo apt-get install finger
-	set DETAILS=`getent passwd| grep $USERNAME | cut -d : -f 5`
+	set DETAILS=`getent passwd| grep $USER | cut -d : -f 5`
 	echo Login: $USER
 	echo Name: $DETAILS
 	#else
