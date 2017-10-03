@@ -40,7 +40,8 @@ else
 	#elif [[ $var == "no" ]]; then
 	#	sudo apt-get install finger
 	DETAILS=$(getent passwd| grep $USER | cut -d : -f 5)
-	echo $DETAILS
+	echo User: $USER
+	echo Name: $DETAILS
 	#else
 	#	echo Wrong answer. See that. #that function
 	#fi
