@@ -1,12 +1,6 @@
 #!/bin/tcsh
 #Klara Muzalewska
 
-# if ( "$1" !~ ^[0-9]+$  | "$2" !~ ^[0-9]+$ ) then
-#     echo Bad parameters
-#     exit 1
-# echo $input | awk ' { if ( $0 ~ /[0-9]/ )
-#                       printf " Numeric Input"
-#                 else printf " String input " } '
 @ va= `echo $2 | grep '^[-,0-9]*$'`
 @ va2= `echo $1 | grep '^[-,0-9]*$'`
 if ( ! $va | ! $va2) then
