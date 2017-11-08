@@ -14,9 +14,10 @@ for (my $var = 0; $var < $max; $var++) {
     if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
       while (my $row = <$fh>) {
         chomp $row;
-        unless (/^#/) {
-         	print "$. : $row\n";
-         }
+        print "$. : $row" unless /^#/ =~ $_
+        # unless (/^#/) {
+        #  	print "$. : $row\n";
+        #  }
       }
     } else {
       warn "Could not open file '$filename' $!";
@@ -36,9 +37,7 @@ for (my $var = 0; $var < $max; $var++) {
 # if ($nrOfArguments == 0 ) {
 # 	# body...
 # }
-# for (my $var = 0; $var < ($#ARGV +1); $var++) {
-# 	# body...
-# }
+
 # while (<>) {
 # 	if (!/^#/) {
 # 			print
