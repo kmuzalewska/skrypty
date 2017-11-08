@@ -6,7 +6,7 @@
 use strict;
 use warnings;
 my $max = $#ARGV+1;
-#print $var;
+
 for (my $var = 0; $var < $max; $var++) {
 	my $filename = $ARGV[$var];
 	print $filename;
@@ -14,7 +14,7 @@ for (my $var = 0; $var < $max; $var++) {
     if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
       while (my $row = <$fh>) {
         chomp $row;
-        unless (/^#/) {
+        unless ($row =~ /^#/) {
          	print "$. : $row\n";
          }
       }
