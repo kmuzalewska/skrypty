@@ -33,18 +33,19 @@ if ($nrOfFlag == 0) {
  	}	
 } elsif ($nrOfFlag == 1) {
  	if ($Nflag == 1) {
- 		for (my $var = 0; $var < ($#files+1); $var++) {
-		 	my $filename = $ARGV[$var];
-		    if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
-		      while (my $row = <$fh>) {
-		        chomp $row;
-		        unless ($row =~ /^#/) {
-		         	print "$row\n";
-		         }
-		      }
-		    } else {
-		      warn "Could not open file '$filename' $!";
-		    }
+ 		# for (my $var = 0; $var < ($#files+1); $var++) {
+		 # 	my $filename = $ARGV[$var];
+		 #    if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
+		 #      while (my $row = <$fh>) {
+		 #        chomp $row;
+		 @ARGV = @files;
+ 		 while (<>) {
+		     	print "$row\n" unless ($row =~ /^#/);
+		    #      }
+		    #   }
+		    # } else {
+		    #   warn "Could not open file '$filename' $!";
+		    # }
 		}
  	} elsif ($cflag == 1 ){
  		@ARGV = @files;
