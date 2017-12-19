@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 #Klara Muzalewska
 
+use File::Basename;
+use lib dirname (__FILE__);
 use rgx;
 @arguments = @ARGV;
 $nrOfArguments = $#ARGV+1;
