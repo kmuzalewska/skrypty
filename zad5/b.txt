@@ -1,3 +1,8 @@
 jsjs
 #networ
-gfgg
+gfgg 5. 33 3
+.0 .15 0.15 +0.2
+e
+e-12
+12e12
+1.e12
