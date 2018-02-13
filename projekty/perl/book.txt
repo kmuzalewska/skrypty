@@ -1,0 +1,9 @@
+\documentclass[12pt,a4paper]{book}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\renewcommand*{\chaptername}{Rozdział}
+\renewcommand*{\contentsname}{Spis treści}
+

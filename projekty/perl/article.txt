@@ -1,0 +1,10 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx} 
+\usepackage{caption}
+\usepackage{float}
+\usepackage{url}
