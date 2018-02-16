@@ -1,9 +1,10 @@
 \documentclass[12pt,a4paper]{book}
-\usepackage{amsmath}
-\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
 \usepackage[T1]{fontenc}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\renewcommand*{\chaptername}{Rozdział}
-\renewcommand*{\contentsname}{Spis treści}
-
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx} 
+\usepackage{caption}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
