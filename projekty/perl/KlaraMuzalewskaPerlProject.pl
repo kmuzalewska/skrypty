@@ -2,7 +2,10 @@
 #Klara Muzalewska
 
 use utf8;
+binmode(STDIN, ":utf8");
 binmode(STDOUT, ":utf8");
+use File::Basename;
+my $dirname = dirname(__FILE__);
 
 @arguments = @ARGV;
 $nrOfArguments = $#ARGV+1;
@@ -12,12 +15,12 @@ sub help(){
 	print "Program sluzy do tworzenia pliku pdf na podstawie istniejacego pliku txt bez formatowania.\n";
 	print "Program pozwala na bardzo podstawowe formatowanie. \n";
 	print "Na poczatku program prosi o wpisanie autora i tytulu formatowanego tekstu (po kazdym wpisaniu odpowiedzi nalezy wpisac enter).\n";
-	print "Po kazdym przetworzonym akapicie program w linii polecen pyta o sposob formatowania.\n";
-	print "Możliwe opcje to nowa linia, nowy rozdzial i separator w formie kilku gwiazdek po akapicie. \n";
+	print "Na poczatku formatowania (tuż po uruchomieniu programu) dostajemy mozliwosc nowego rozdzialu, separatora w formie kilku gwiazdek oraz brak formatowania.\n";
+	print "Opcja domyslna to nowy rozdzial.\n";
+	print "Potem po kazdej przetworzonej linii tekstu program w linii polecen pyta o sposob formatowania.\n";
+	print "Możliwe opcje to nowa linia, nowy rozdzial, separator w formie kilku gwiazdek oraz brak formatowania. \n";
 	print "Aby wybrac opcje nalezy wpisac litere ktora oznacza dana opcje. Mozna wcisnac przycisk enter jako opcje domyślną, czyli opcja\n";
 	print "nowej linii.\n";
-	print "Jedynie na poczatku formatowania dostajemy mozliwosc nowego rozdzialu lub separator w formie kilku gwiazdek.\n";
-	print "Opcja domyslna to nowy rozdzial.\n";
 	print "\n\n";
 	print "Jako argumenty podajemy plik txt, który chcemy sformatować do pliku pdf. Jeśli podane zostanie więcej plikow do\n";
 	print "formatowania program bierze pod uwage tylko pierwszy podany plik. \n";
@@ -38,6 +41,8 @@ sub interactionWithBookUser(){
     print "\n";
     print 'c)\begin{center}*****\end{center}- it create sepatation with stars between text.';
     print "\n";
+    print 'd) no formating here';
+    print "\n";
     print 'q) Create pdf with texts from origin text but no more formating.';
     print "\n";
 
@@ -56,6 +61,8 @@ sub interactionWithBeginningkUser() {
     print 'a) \chapter{}- it create new chapter';
     print "\n";
     print 'b) \begin{center}*****\end{center}- it create sepatation with stars between text' ;
+    print "\n";
+    print 'c) no formating here';
     print "\n";
     print 'q) Create pdf with texts from origin text but no more formating.';
     print "\n";
@@ -108,7 +115,7 @@ if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
 	# 		print "Wrong option.";
 	# 	}	
 	# }
-	$header="book.txt";
+	$header="$dirname/book.txt";
 	if (open(my $head, '<:encoding(UTF-8)', $header)) {
 		while (my $row = <$head>) {
 			undef @words;
@@ -125,6 +132,7 @@ if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
 	$title = <STDIN>;
 	print FILE "$title}\n";
 	print FILE '\begin{document}';
+	print FILE "\n";
 	print FILE '\maketitle';
 	print FILE "\n";
 	$quit=0;
@@ -142,7 +150,9 @@ if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
 			} elsif ($option eq 'b'){
 				print FILE '\begin{center}*****\end{center}';
 				last;
-			}elsif ($option eq 'q'){
+			} elsif ($option eq 'c'){
+				last;
+			} elsif ($option eq 'q'){
 				$quit=1;
 				last;
 			} else{
@@ -159,25 +169,29 @@ if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
 	        print "Paragraph:\n";
     		print $row;
     		print "\n";
-    		print FILE "$row\n";
+    		# print FILE "$row\n";
     		while (1) {
 				$option = &interactionWithBookUser("Enter separator:", "a"); #"Enter separator:"
 				if ($option eq 'a'){
-					print FILE "\\\\";
+					print FILE "$row\\\\";
 					last;
 				} elsif ($option eq 'b'){
-					print FILE '\chapter{';
+					print FILE "$row\n";
 					print "Chapter's title:";
 					$chapter = <STDIN>;
-					print FILE "$chapter}\n";
+					$text = '\chapter{' . "$chapter" . "}\n";
+					# print FILE "$text"; #\chapter{';
+					# print FILE "$chapter}\n";
 					last;
 				} elsif ($option eq 'c'){
 					print FILE '\begin{center}*****\end{center}';
 					last;
-				}elsif ($option eq 'q'){
+				} elsif ($option eq 'd'){
+					last;
+				} elsif ($option eq 'q'){
 					$quit=1;
 					last;
-				} else{
+				} else {
 					print "\nWrong option.\n";
 				}	
 			}
