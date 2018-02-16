@@ -15,10 +15,10 @@ sub help(){
 	print "Program sluzy do tworzenia pliku pdf na podstawie istniejacego pliku txt bez formatowania.\n";
 	print "Program pozwala na bardzo podstawowe formatowanie. \n";
 	print "Na poczatku program prosi o wpisanie autora i tytulu formatowanego tekstu (po kazdym wpisaniu odpowiedzi nalezy wpisac enter).\n";
-	print "Na poczatku formatowania (tuż po uruchomieniu programu) dostajemy mozliwosc nowego rozdzialu, separatora w formie kilku gwiazdek oraz brak formatowania.\n";
-	print "Opcja domyslna to nowy rozdzial.\n";
-	print "Potem po kazdej przetworzonej linii tekstu program w linii polecen pyta o sposob formatowania.\n";
-	print "Możliwe opcje to nowa linia, nowy rozdzial, separator w formie kilku gwiazdek oraz brak formatowania. \n";
+	print "Formatowanie polega na tym, ze program wyświetla nam linie tekstu i pytanie jakie formatowanie ma PRZED nią wykonać.";
+	print "Na poczatku formatowania (tuż po uruchomieniu programu) dostajemy mozliwosc wpisania przed ta linia nowego rozdzialu, separatora w formie kilku gwiazdek oraz brak formatowania.\n";
+	print "Opcja domyslna to nowy rozdzial. Gdy wybieramy nowy rozdzial dostajemy pytanie o tytul rozdzialu.\n";
+	print "W kolejnych iteracjach (liniach) mozliwe opcje to nowa linia, nowy rozdzial, separator w formie kilku gwiazdek oraz brak formatowania. \n";
 	print "Aby wybrac opcje nalezy wpisac litere ktora oznacza dana opcje. Mozna wcisnac przycisk enter jako opcje domyślną, czyli opcja\n";
 	print "nowej linii.\n";
 	print "\n\n";
@@ -85,7 +85,6 @@ for (my $var = 0; $var < $nrOfArguments ; $var++) {
 }
 
 
-# for (my $var = 0; $var < ($#files+1); $var++) {
 my $filename = $ARGV[0];
 print "Name of file: $filename\n";
 
@@ -96,25 +95,11 @@ if (-e $pdfFile){
 	my $existed=1;
 	my $write_secs_beggin = (stat($pdfFile))[9];
 }
-# print "$fileToWrite\n";
 if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
 	unless(open FILE, ">:utf8", $fileToWrite) {
 		warn "\nUnable to create $file\n";
 		continue;
 	}
-	# while (1) {
-	# 	print "What type of document: \n a) book \n b) article\n";
-	# 	$type = <STDIN>;
-	# 	if ($type == 'a'){
-	# 		$header="book.txt";
-	# 		last;
-	# 	} elsif ($type == 'b'){
-	# 		$header="article.txt";
-	# 		last;$write_secs
-	# 	} else{
-	# 		print "Wrong option.";
-	# 	}	
-	# }
 	$header="$dirname/book.txt";
 	if (open(my $head, '<:encoding(UTF-8)', $header)) {
 		while (my $row = <$head>) {
@@ -137,56 +122,62 @@ if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
 	print FILE "\n";
 	$quit=0;
 	$begin=1;
-    if($begin){
-    	$begin=0;
-    	while (1) {
-			$option = &interactionWithBeginningkUser("Enter separator:", "a"); #"Enter separator:"
-			if ($option eq 'a'){
-				print FILE '\chapter{';
-				print "Chapter's title:";
-				$chapter = <STDIN>;
-				print FILE "$chapter}\n";
-				last;
-			} elsif ($option eq 'b'){
-				print FILE '\begin{center}*****\end{center}';
-				last;
-			} elsif ($option eq 'c'){
-				last;
-			} elsif ($option eq 'q'){
-				$quit=1;
-				last;
-			} else{
-				print "\nWrong option.\n";
-			}	
-		}
-    }
 	while (my $row = <$fh>) {
 		undef @words;
         chomp $row;
         if ($quit) {
         	print FILE "$row\n";
         } else{
-	        print "Paragraph:\n";
-    		print $row;
+	        print "\nLine:\n";
+    		print "$row\n";
     		print "\n";
+    		if($begin){
+		    	$begin=0;
+		    	while (1) {
+					$option = &interactionWithBeginningkUser("Enter separator:", "a"); #"Enter separator:"
+					if ($option eq 'a'){
+						print FILE '\chapter{';
+						print "Chapter's title:";
+						$chapter = <STDIN>;
+						print FILE "$chapter}\n";
+						print FILE "$row\n";
+						last;
+					} elsif ($option eq 'b'){
+						print FILE '\begin{center}*****\end{center}';
+						print FILE "$row\n";
+						last;
+					} elsif ($option eq 'c'){
+						print FILE "$row\n";
+						last;
+					} elsif ($option eq 'q'){
+						$quit=1;
+						last;
+					} else{
+						print "\nWrong option.\n";
+					}	
+				}
+				next;
+		    }
     		# print FILE "$row\n";
     		while (1) {
 				$option = &interactionWithBookUser("Enter separator:", "a"); #"Enter separator:"
 				if ($option eq 'a'){
-					print FILE "$row\\\\";
+					# print FILE "";
+					print FILE "\\\\$row\n";
 					last;
 				} elsif ($option eq 'b'){
-					print FILE "$row\n";
+					print FILE '\chapter{';
 					print "Chapter's title:";
 					$chapter = <STDIN>;
-					$text = '\chapter{' . "$chapter" . "}\n";
-					# print FILE "$text"; #\chapter{';
-					# print FILE "$chapter}\n";
+					print FILE "$chapter}\n";
+					print FILE "$row\n";
 					last;
 				} elsif ($option eq 'c'){
 					print FILE '\begin{center}*****\end{center}';
+					print FILE "$row\n";
 					last;
 				} elsif ($option eq 'd'){
+					print FILE "$row\n";
 					last;
 				} elsif ($option eq 'q'){
 					$quit=1;
@@ -223,5 +214,3 @@ if (open(my $fh, '<:encoding(UTF-8)', $filename)) {
 } else {
     warn "Could not open file '$filename' $!\n";
 }
-
-# }
